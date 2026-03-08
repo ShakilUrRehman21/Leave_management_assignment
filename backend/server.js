@@ -29,7 +29,7 @@ app.get('/api', (req, res) => {
 });
 
 // Serve frontend static files
-const frontendDistPath = path.join(__dirname, '../frontend/dist');
+const frontendDistPath = path.join(__dirname, 'public');
 app.use(express.static(frontendDistPath));
 
 // Catch-all route to serve Vue index.html for any non-API routes (SPA routing)
