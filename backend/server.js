@@ -2,12 +2,15 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const connectDB = require('./config/db');
+const mongoose = require('mongoose');
 
 // Load env vars
 dotenv.config();
 
-// Connect to database
-connectDB();
+// Connect to database resiliently for Serverless
+if (mongoose.connection.readyState === 0) {
+    connectDB();
+}
 
 const app = express();
 
@@ -44,9 +47,11 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}
 
 // Export the Express API for Vercel
 module.exports = app;
