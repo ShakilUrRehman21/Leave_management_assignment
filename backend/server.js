@@ -15,11 +15,27 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const path = require('path');
+
 // Routes
 const authRoutes = require('./routes/authRoutes');
 const leaveRoutes = require('./routes/leaveRoutes');
 app.use('/api/auth', authRoutes);
 app.use('/api/leaves', leaveRoutes);
+
+// Root Health Check API Route (optional)
+app.get('/api', (req, res) => {
+    res.send('Leave Management API is running...');
+});
+
+// Serve frontend static files
+const frontendDistPath = path.join(__dirname, '../frontend/dist');
+app.use(express.static(frontendDistPath));
+
+// Catch-all route to serve Vue index.html for any non-API routes (SPA routing)
+app.get(/^(?!\/api).+/, (req, res) => {
+    res.sendFile(path.join(frontendDistPath, 'index.html'));
+});
 
 // Error handler
 app.use((err, req, res, next) => {
@@ -31,3 +47,6 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
+// Export the Express API for Vercel
+module.exports = app;

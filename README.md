@@ -343,45 +343,23 @@ Leave
 
 ---
 
-## Backend Deployment (Render)
+## Unified Deployment (Vercel)
 
-1. Push backend code to GitHub
-2. Go to Render
-3. Create new Web Service
-4. Connect GitHub repository
-5. Add environment variables:
+This project is configured as a Monorepo! The frontend and backend can be hosted **together** as a single deployment on Vercel.
 
+1. Push the entire `leave-management-system` code to a GitHub repository.
+2. Go to Vercel and create a new Project.
+3. Import the repository.
+4. Set the **Root Directory** to `backend`.
+5. Under Environment Variables, add:
 ```
-PORT
-MONGO_URI
-JWT_SECRET
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
 ```
+6. Click **Deploy**. Vercel will automatically build the Vue app and deploy the Express API in a serverless environment, serving both from the same URL!
 
-6. Deploy backend
-
-Example backend URL:
-
-```
-https://leave-management-api.onrender.com
-```
-
----
-
-## Frontend Deployment (Vercel)
-
-1. Push frontend code to GitHub
-2. Go to Vercel
-3. Import repository
-4. Add environment variable:
-
-```
-VITE_API_URL=https://leave-management-api.onrender.com/api
-```
-
-5. Deploy project
-
-Example frontend URL:
-
+Example Monorepo URL:
 ```
 https://leave-management.vercel.app
 ```
