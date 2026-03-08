@@ -36,7 +36,10 @@ const frontendDistPath = path.join(__dirname, 'public');
 app.use(express.static(frontendDistPath));
 
 // Catch-all route to serve Vue index.html for any non-API routes (SPA routing)
-app.get('*', (req, res) => {
+app.use((req, res, next) => {
+    if (req.path.startsWith('/api')) {
+        return next();
+    }
     res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
