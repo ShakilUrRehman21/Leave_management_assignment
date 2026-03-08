@@ -31,18 +31,6 @@ app.get('/api', (req, res) => {
     res.send('Leave Management API is running...');
 });
 
-// Serve frontend static files
-const frontendDistPath = path.join(__dirname, 'public');
-app.use(express.static(frontendDistPath));
-
-// Catch-all route to serve Vue index.html for any non-API routes (SPA routing)
-app.use((req, res, next) => {
-    if (req.path.startsWith('/api')) {
-        return next();
-    }
-    res.sendFile(path.join(__dirname, 'public/index.html'));
-});
-
 // Error handler
 app.use((err, req, res, next) => {
     console.error(err.stack);
